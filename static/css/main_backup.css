@@ -1,0 +1,528 @@
+body {
+  background-image: url('../bg.jpg');
+}
+
+.maintitel {
+	place-self: center;
+	background: linear-gradient(90deg, #00f, #0ff, #00f) -100%/ 200%;
+	-webkit-background-clip: text;
+	        background-clip: text;
+	color: transparent;
+	font: 900 clamp(2em, 8vw, 10em) exo, sans-serif;
+	animation: shimmer 2s linear infinite
+}
+
+@keyframes shimmer { to { background-position: 100% } }
+
+@media (forced-colors: active) {
+  p {
+    background: #212121;
+    color: aquamarine
+  }
+}
+
+.logo{
+    width: 10%;
+    height: 10%;
+}
+
+#newchat{
+  width: 5%;
+}
+
+.home{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 3%;
+}   
+
+body {
+  background-color: rgba(171, 224, 246, 0.963);
+}
+
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  align-items: flex-end;   /* keeps the button at the bottom when the box grows */
+  gap: 10px;
+
+  width: 90%;
+  max-width: 600px;
+  padding: 10px;
+
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgb(0 0 0 / 15%);
+}
+
+#question {
+  flex: 1;
+  height: 45px;            /* one line to start with */
+  max-height: 66px;        /* two lines, then it scrolls */
+  padding: 10px 14px;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 21px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  resize: none;            /* hides the little drag handle */
+  overflow-y: auto;
+}
+
+#question:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgb(37 99 235 / 20%);
+}
+
+#askButton {
+  height: 45px;
+  padding: 0 18px;
+
+  color: white;
+  background: #2563eb;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#askButton:hover {
+  background: #1d4ed8;
+}
+
+/* ---------- Response box: fixed size, scrolls when the reply is long ---------- */
+#response{
+    width: 100%;
+    height: calc(100vh - 300px);   /* fixed height, fills the space above the input bar */
+    min-height: 600px;
+    padding: 20px 40px;
+    font-size: 15px;
+    font-family: Sans-serif;
+    line-height: 1.5;
+    color: #000000;
+    background-color: #ecebeb;
+    border-radius: 15px;
+    overflow-y: auto;              /* scrollbar appears only when the text is too long */
+    overflow-x: hidden;
+    overflow-wrap: break-word;
+    /* no white-space: pre-wrap here: the markdown is now turned into real HTML */
+}
+
+/* ---------- Formatting inside the response box (from markdown) ---------- */
+#response > :first-child { margin-top: 0; }
+#response > :last-child  { margin-bottom: 0; }
+
+#response p { margin: 0 0 12px; }
+
+#response strong { font-weight: 700; }
+
+#response ol,
+#response ul {
+    margin: 0 0 12px;
+    padding-left: 28px;
+}
+
+#response li { margin-bottom: 8px; }
+
+/* code blocks (```bash ... ```) */
+#response pre {
+    background: #1e1e1e;
+    color: #f5f5f5;
+    padding: 12px 16px;
+    margin: 8px 0 14px;
+    border-radius: 8px;
+    overflow-x: auto;              /* long code lines scroll sideways inside the block */
+}
+
+#response pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+    font-size: 14px;
+}
+
+/* inline `code` */
+#response code {
+    font-family: Consolas, "Courier New", monospace;
+    background: #d8d8d8;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+
+/* ---------- Home screen ---------- */
+#startScreen {
+    text-align: center;
+}
+
+.tagline {
+    margin: 10px 0 28px;
+    font-family: Sans-serif;
+    font-size: 20px;
+    color: #1e3a5f;
+}
+
+.features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    max-width: 900px;
+    margin: 0 auto 32px;
+}
+
+/* ---------- Feature cards + animated border ---------- */
+.feature {
+    position: relative;
+    overflow: hidden;              /* keeps the moving line inside the rounded corners */
+    flex: 1 1 240px;
+    padding: 20px;
+    text-align: left;
+    background: white;
+    border-radius: 12px;
+    border: 2px solid transparent; /* reserve the space the line will trace */
+    box-shadow: 0 4px 15px rgb(0 0 0 / 10%);
+}
+
+/* the spinning gradient ring, masked so only the 2px border shows */
+.feature::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: conic-gradient(
+        from var(--angle),
+        transparent 0deg,
+        transparent 300deg,
+        #2563eb 340deg,
+        #83b4ff 360deg
+    );
+
+    /* mask everything except the outer 2px ring */
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    pointer-events: none;
+
+    animation: spin-border 3s linear infinite;
+}
+
+/* keep the card's text above the animated ring */
+.feature > * {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes spin-border {
+    to { --angle: 360deg; }
+}
+
+/* lets the --angle custom property animate smoothly */
+@property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.feature h3 {
+    margin: 0 0 8px;
+    font-family: Sans-serif;
+    font-size: 18px;
+    color: rgb(33, 100, 244);
+}
+
+.feature p {
+    margin: 0;
+    font-family: Sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #333;
+}
+
+.startbtn {
+    position: relative;
+    display: inline-block;
+    padding: 20px 40px;
+
+    color: white;
+    background-color: #2563eb;
+
+    font-size: 18px;
+    text-transform: uppercase;
+
+    border: none;
+    border-radius: 20px;
+
+    cursor: pointer;
+    transition: all .2s;
+
+    animation: moveInBottom 1s ease-out;
+    animation-fill-mode: backwards;
+}
+
+.startbtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.startbtn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.startbtn::after {
+    content: "";
+    display: inline-block;
+
+    height: 100%;
+    width: 100%;
+
+    border-radius: 20px;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    z-index: -1;
+
+    background-color: #2563eb;
+
+    transition: all .4s;
+}
+
+.startbtn:hover::after {
+    transform: scaleX(1.4) scaleY(1.6);
+    opacity: 0;
+}
+
+.startbtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+@keyframes moveInBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.startbtn:hover {
+    background: #1d4ed8;
+}
+
+.text-box {
+    display: flex;
+    justify-content: center;
+    gap: 100px; /* Increase this value for more space */
+}
+
+/* ---------- Chat bubbles ---------- */
+.msg {
+    width: fit-content;            /* bubble is only as wide as its text */
+    max-width: min(80%, 700px);    /* but never wider than 80% of the box or 700px */
+    margin: 0 0 14px;
+    padding: 10px 16px;
+    border-radius: 14px;
+    overflow-wrap: break-word;
+}
+
+.msg.user {
+    margin-left: auto;             /* pushes the user's bubble to the right */
+    color: white;
+    background: #4d77d1;
+    border-bottom-right-radius: 4px;
+    white-space: pre-wrap;         /* keeps the line breaks the user typed */
+}
+
+.msg.ai {
+    margin-right: auto;            /* AI bubble stays on the left */
+    background: white;
+    border-bottom-left-radius: 4px;
+}
+
+#response .msg > :first-child { margin-top: 0; }
+#response .msg > :last-child  { margin-bottom: 0; }
+
+#response .empty {
+    margin: 40px 0;
+    text-align: center;
+    color: #777;
+}
+
+.startbtn:disabled,
+#askButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.start-status {
+    min-height: 24px;
+    margin-top: 18px;
+    font-family: Sans-serif;
+    color: #1e3a5f;
+}
+
+/* ---------- "Not supported" popup ---------- */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgb(0 0 0 / 50%);
+}
+
+.modal-overlay[hidden] {
+    display: none;
+}
+
+.modal {
+    width: 100%;
+    max-width: 440px;
+    padding: 28px;
+    font-family: Sans-serif;
+    line-height: 1.5;
+    color: #222;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 10px 40px rgb(0 0 0 / 30%);
+}
+
+.modal h2 {
+    margin: 0 0 12px;
+    font-size: 22px;
+    color: rgb(33, 100, 244);
+}
+
+.modal p {
+    margin: 0 0 12px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.modal-actions button {
+    padding: 10px 20px;
+    font-size: 15px;
+    color: white;
+    background: #2563eb;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.modal-actions button:hover {
+    background: #1d4ed8;
+}
+
+.modal-actions button.secondary {
+    color: #333;
+    background: #e5e7eb;
+}
+
+.modal-actions button.secondary:hover {
+    background: #d1d5db;
+}
+
+
+
+
+
+.clearcontainer {
+    display: flex;
+    justify-content: right;
+    align-items: right;
+}
+
+#clearbtn {
+    outline: none;
+    height: 40px;
+    width: 130px;
+    border-radius: 40px;
+    background: #1d4ed8;
+    border: 2px solid var(--green);
+    color: white;
+    letter-spacing: 1px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+#clearbtn:hover {
+    color: black;
+    background: var(--green);
+}
+
+#clearbtn:active {
+    letter-spacing: 2px;
+}
+
+/* Loading animation */
+#clearbtn.onclic {
+    width: 40px;
+    border-radius: 50%;
+    border: 4px solid #2563eb;
+    border-left-color: #2563eb;
+    background: white;
+    font-size: 0;
+    animation: rotating 2s linear infinite;
+    pointer-events: none;
+}
+
+/* Success animation */
+#clearbtn.validate {
+    width: 40px;
+    border-radius: 50%;
+    background: var(--green);
+    border-color: var(--green);
+    color: #2563eb;
+    font-size: 0;
+}
+
+#clearbtn.validate::after {
+    content: "✓";
+    font-size: 30px;
+    font-weight: bold;
+}
+
+@keyframes rotating {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

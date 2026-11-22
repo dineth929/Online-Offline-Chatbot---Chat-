@@ -1,0 +1,199 @@
+/* Extra styles for the create account page.
+   Load this AFTER black-screen.css, which provides the base theme. */
+
+/* The card can grow taller than the sign in card, so let the page scroll */
+.page {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+/* Tighter vertical rhythm because this form has four fields */
+#signupForm .inputbox,
+#otpForm .inputbox {
+    margin: 22px 0;
+}
+
+/* ---------- Field errors and hints ---------- */
+.field-error,
+.field-hint {
+    margin: -14px 0 0;
+    font-size: 13px;
+    line-height: 1.4;
+    text-align: left;
+}
+
+.field-error {
+    color: #f87171;
+}
+
+.field-hint {
+    color: #94a3b8;
+}
+
+.field-error:empty {
+    display: none;
+}
+
+/* Hide the hint while an error is showing for that field */
+.inputbox.invalid + .field-hint {
+    display: none;
+}
+
+/* Invalid field: red line and red label */
+.inputbox.invalid input {
+    border-bottom-color: #f87171;
+}
+
+.inputbox.invalid::after {
+    background: #f87171;
+    transform: scaleX(1);
+}
+
+.inputbox.invalid input:focus + label,
+.inputbox.invalid input:not(:placeholder-shown) + label {
+    color: #f87171;
+}
+
+/* Valid field: green label */
+.inputbox.valid input:not(:placeholder-shown) + label {
+    color: #4ade80;
+}
+
+/* Error that is not about a single field (for example, server errors) */
+.form-error {
+    margin: 4px 0 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    text-align: left;
+    color: #fecaca;
+    background: rgba(248, 113, 113, 0.14);
+    border: 1px solid rgba(248, 113, 113, 0.4);
+    border-radius: 10px;
+}
+
+.form-error:empty {
+    display: none;
+}
+
+/* ---------- Disabled button while sending ---------- */
+form input[type="submit"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ---------- Success view ---------- */
+#successView[hidden] {
+    display: none;
+}
+
+#successView {
+    animation: fadeUp 0.5s ease-out backwards;
+}
+
+.success-icon {
+    width: 64px;
+    height: 64px;
+    margin: 22px auto 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: #fff;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    border-radius: 50%;
+    box-shadow: 0 10px 24px rgba(34, 197, 94, 0.4);
+}
+
+#successView .subtitle {
+    margin: 0 0 26px;
+    line-height: 1.5;
+}
+
+#successView .subtitle strong {
+    color: #fff;
+}
+
+.signin-link {
+    display: block;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    border-radius: 12px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.signin-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(79, 70, 229, 0.5);
+}
+
+.signin-link:focus-visible {
+    outline: 3px solid #83b4ff;
+    outline-offset: 4px;
+}
+
+/* ---------- Step 2: email code ---------- */
+#otpView[hidden] {
+    display: none;
+}
+
+#otpView {
+    animation: fadeUp 0.5s ease-out backwards;
+}
+
+#otpView .subtitle {
+    line-height: 1.5;
+}
+
+#otpView .subtitle strong {
+    color: #fff;
+    word-break: break-all;
+}
+
+#otp {
+    letter-spacing: 4px;
+}
+
+.otp-info {
+    margin: -14px 0 8px;
+    font-size: 13px;
+    line-height: 1.4;
+    text-align: left;
+    color: #4ade80;
+}
+
+.otp-info:empty {
+    display: none;
+}
+
+.otp-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.link-btn {
+    padding: 0;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: #93c5fd;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.link-btn:hover:not(:disabled) {
+    text-decoration: underline;
+}
+
+.link-btn:disabled {
+    color: #64748b;
+    cursor: not-allowed;
+}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chat++ Signin</title>
+    <link rel="stylesheet" href="../static/css/black-screen.css">
+</head>
+<body>
+    <!--<img src="{{ url_for('static', filename='icon.png') }}" alt="Chat++ logo" class="side-icon">-->
+    <img src="../static/icon.png" alt="Chat++ logo" class="side-icon">
+    <main class="page">
+        <div class="container">
+            <div class="logo">Chat<span>++</span></div>
+            <h1>Welcome back</h1>
+            <p class="subtitle">Sign in for online chatting</p>
+
+            <form id="loginForm">
+                <div class="inputbox">
+                    <input type="email" id="username" name="username" placeholder=" " autocomplete="off" required>
+                    <label for="username">Email</label>
+                </div>
+
+                <div class="inputbox">
+                    <input type="password" id="password" name="password" placeholder=" " autocomplete="off" required>
+                    <label for="password">Password</label>
+                    <button type="button" class="toggle-pw" id="togglePw" aria-label="Show password">Show</button>
+                </div>
+                <div id="emailError" style="color:rgb(245, 52, 52); font-size: 14px;"></div>
+                <input type="submit" value="Sign in" id="sendBtn">
+            </form>
+            <p class="footer-text"><a href="/forgot_password">Forgot Password</a></p>
+            <p class="footer-text">No account? <a href="/new_account">Create account</a></p>
+        </div>
+    </main>
+<script src="{{ url_for('static', filename='js/signin.js') }}"></script>
+</body>
+</html>

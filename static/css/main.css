@@ -1,0 +1,1411 @@
+.maintitel {
+	place-self: center;
+	background: linear-gradient(90deg, #00f, #0ff, #00f) -100%/ 200%;
+	-webkit-background-clip: text;
+	        background-clip: text;
+	color: transparent;
+	font: 900 clamp(2em, 8vw, 10em) exo, sans-serif;
+	animation: shimmer 2s linear infinite
+}
+
+@keyframes shimmer { to { background-position: 100% } }
+
+@media (forced-colors: active) {
+  p {
+    background: #212121;
+    color: aquamarine
+  }
+}
+
+.logo{
+    width: 10%;
+    height: 10%;
+}
+
+#newchat{
+  width: 5%;
+}
+
+.home{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 3%;
+}   
+
+body {
+  background-color: rgba(171, 224, 246, 0.963);
+}
+
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  align-items: flex-end;   /* keeps the button at the bottom when the box grows */
+  gap: 10px;
+
+  width: 90%;
+  max-width: 600px;
+  padding: 10px;
+
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgb(0 0 0 / 15%);
+}
+
+#question {
+  flex: 1;
+  height: 45px;            /* one line to start with */
+  max-height: 66px;        /* two lines, then it scrolls */
+  padding: 10px 14px;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 21px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  resize: none;            /* hides the little drag handle */
+  overflow-y: auto;
+}
+
+#question:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgb(37 99 235 / 20%);
+}
+
+#askButton {
+  height: 45px;
+  padding: 0 18px;
+
+  color: white;
+  background: #2563eb;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#askButton:hover {
+  background: #1d4ed8;
+}
+
+/* ---------- Response box: fixed size, scrolls when the reply is long ---------- */
+#response{
+    width: 100%;
+    height: calc(100vh - 300px);   /* fixed height, fills the space above the input bar */
+    min-height: 600px;
+    padding: 20px 40px;
+    font-size: 15px;
+    font-family: Sans-serif;
+    line-height: 1.5;
+    color: #000000;
+    background-color: #ecebeb;
+    border-radius: 15px;
+    overflow-y: auto;              /* scrollbar appears only when the text is too long */
+    overflow-x: hidden;
+    overflow-wrap: break-word;
+    /* no white-space: pre-wrap here: the markdown is now turned into real HTML */
+}
+
+/* ---------- Formatting inside the response box (from markdown) ---------- */
+#response > :first-child { margin-top: 0; }
+#response > :last-child  { margin-bottom: 0; }
+
+#response p { margin: 0 0 12px; }
+
+#response strong { font-weight: 700; }
+
+#response ol,
+#response ul {
+    margin: 0 0 12px;
+    padding-left: 28px;
+}
+
+#response li { margin-bottom: 8px; }
+
+/* code blocks (```bash ... ```) */
+#response pre {
+    background: #1e1e1e;
+    color: #f5f5f5;
+    padding: 12px 16px;
+    margin: 8px 0 14px;
+    border-radius: 8px;
+    overflow-x: auto;              /* long code lines scroll sideways inside the block */
+}
+
+#response pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+    font-size: 14px;
+}
+
+/* inline `code` */
+#response code {
+    font-family: Consolas, "Courier New", monospace;
+    background: #d8d8d8;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+
+/* ---------- Home screen ---------- */
+#startScreen {
+    text-align: center;
+}
+
+.tagline {
+    margin: 10px 0 28px;
+    font-family: Sans-serif;
+    font-size: 20px;
+    color: #1e3a5f;
+}
+
+.features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    max-width: 900px;
+    margin: 0 auto 32px;
+}
+
+/* ---------- Feature cards + animated border ---------- */
+.feature {
+    position: relative;
+    overflow: hidden;              /* keeps the moving line inside the rounded corners */
+    flex: 1 1 240px;
+    padding: 20px;
+    text-align: left;
+    background: white;
+    border-radius: 12px;
+    border: 2px solid transparent; /* reserve the space the line will trace */
+    box-shadow: 0 4px 15px rgb(0 0 0 / 10%);
+}
+
+/* the spinning gradient ring, masked so only the 2px border shows */
+.feature::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: conic-gradient(
+        from var(--angle),
+        transparent 0deg,
+        transparent 300deg,
+        #2563eb 340deg,
+        #83b4ff 360deg
+    );
+
+    /* mask everything except the outer 2px ring */
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    pointer-events: none;
+
+    animation: spin-border 3s linear infinite;
+}
+
+/* keep the card's text above the animated ring */
+.feature > * {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes spin-border {
+    to { --angle: 360deg; }
+}
+
+/* lets the --angle custom property animate smoothly */
+@property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.feature h3 {
+    margin: 0 0 8px;
+    font-family: Sans-serif;
+    font-size: 18px;
+    color: rgb(33, 100, 244);
+}
+
+.feature p {
+    margin: 0;
+    font-family: Sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #333;
+}
+
+.startbtn {
+    position: relative;
+    display: inline-block;
+    padding: 20px 40px;
+
+    color: white;
+    background-color: #2563eb;
+
+    font-size: 18px;
+    text-transform: uppercase;
+
+    border: none;
+    border-radius: 20px;
+
+    cursor: pointer;
+    transition: all .2s;
+
+    animation: moveInBottom 1s ease-out;
+    animation-fill-mode: backwards;
+}
+
+.startbtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.startbtn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.startbtn::after {
+    content: "";
+    display: inline-block;
+
+    height: 100%;
+    width: 100%;
+
+    border-radius: 20px;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    z-index: -1;
+
+    background-color: #2563eb;
+
+    transition: all .4s;
+}
+
+.startbtn:hover::after {
+    transform: scaleX(1.4) scaleY(1.6);
+    opacity: 0;
+}
+
+.startbtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+@keyframes moveInBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.startbtn:hover {
+    background: #1d4ed8;
+}
+
+.text-box {
+    display: flex;
+    justify-content: center;
+    gap: 100px; /* Increase this value for more space */
+}
+
+/* ---------- Chat bubbles ---------- */
+.msg {
+    width: fit-content;            /* bubble is only as wide as its text */
+    max-width: min(80%, 700px);    /* but never wider than 80% of the box or 700px */
+    margin: 0 0 14px;
+    padding: 10px 16px;
+    border-radius: 14px;
+    overflow-wrap: break-word;
+}
+
+.msg.user {
+    margin-left: auto;             /* pushes the user's bubble to the right */
+    color: white;
+    background: #4d77d1;
+    border-bottom-right-radius: 4px;
+    white-space: pre-wrap;         /* keeps the line breaks the user typed */
+}
+
+.msg.ai {
+    margin-right: auto;            /* AI bubble stays on the left */
+    background: white;
+    border-bottom-left-radius: 4px;
+}
+
+#response .msg > :first-child { margin-top: 0; }
+#response .msg > :last-child  { margin-bottom: 0; }
+
+#response .empty {
+    margin: 40px 0;
+    text-align: center;
+    color: #777;
+}
+
+.startbtn:disabled,
+#askButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.start-status {
+    min-height: 24px;
+    margin-top: 18px;
+    font-family: Sans-serif;
+    color: #1e3a5f;
+}
+
+/* ---------- "Not supported" popup ---------- */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgb(0 0 0 / 50%);
+}
+
+.modal-overlay[hidden] {
+    display: none;
+}
+
+.modal {
+    width: 100%;
+    max-width: 440px;
+    padding: 28px;
+    font-family: Sans-serif;
+    line-height: 1.5;
+    color: #222;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 10px 40px rgb(0 0 0 / 30%);
+}
+
+.modal h2 {
+    margin: 0 0 12px;
+    font-size: 22px;
+    color: rgb(33, 100, 244);
+}
+
+.modal p {
+    margin: 0 0 12px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.modal-actions button {
+    padding: 10px 20px;
+    font-size: 15px;
+    color: white;
+    background: #2563eb;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.modal-actions button:hover {
+    background: #1d4ed8;
+}
+
+.modal-actions button.secondary {
+    color: #333;
+    background: #e5e7eb;
+}
+
+.modal-actions button.secondary:hover {
+    background: #d1d5db;
+}
+
+
+
+
+
+.clearcontainer {
+    display: flex;
+    justify-content: right;
+    align-items: right;
+}
+
+#clearbtn {
+    outline: none;
+    height: 40px;
+    width: 130px;
+    border-radius: 40px;
+    background: #1d4ed8;
+    border: 2px solid var(--green);
+    color: white;
+    letter-spacing: 1px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+#clearbtn:hover {
+    color: black;
+    background: var(--green);
+}
+
+#clearbtn:active {
+    letter-spacing: 2px;
+}
+
+/* Loading animation */
+#clearbtn.onclic {
+    width: 40px;
+    border-radius: 50%;
+    border: 4px solid #2563eb;
+    border-left-color: #2563eb;
+    background: white;
+    font-size: 0;
+    animation: rotating 2s linear infinite;
+    pointer-events: none;
+}
+
+/* Success animation */
+#clearbtn.validate {
+    width: 40px;
+    border-radius: 50%;
+    background: var(--green);
+    border-color: var(--green);
+    color: #2563eb;
+    font-size: 0;
+}
+
+#clearbtn.validate::after {
+    content: "✓";
+    font-size: 30px;
+    font-weight: bold;
+}
+
+@keyframes rotating {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+
+/* =========================================================
+   Chat++ refreshed theme — matched to the sign-in screen
+   Deep blue gradient + translucent glass + blue/purple accents
+   ========================================================= */
+
+:root {
+    --navy: #26394f;
+    --blue: #3267ee;
+    --purple: #7938ed;
+    --ice: #a9d5ff;
+    --glass: rgba(105, 130, 174, 0.30);
+    --glass-border: rgba(220, 235, 255, 0.22);
+    --text: #f7f9ff;
+    --muted: #c6d3e7;
+}
+
+html {
+    min-height: 100%;
+    background: #2b3d55;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 28px;
+    color: var(--text);
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    background:
+        radial-gradient(circle at 14% 18%, rgba(69, 132, 206, .24), transparent 34%),
+        radial-gradient(circle at 88% 78%, rgba(113, 91, 190, .25), transparent 38%),
+        linear-gradient(120deg, #26384d 0%, #344d70 52%, #526994 100%);
+    background-attachment: fixed;
+}
+
+/* Chat workspace */
+#start {
+    width: min(100%, 1120px);
+    margin: 0 auto;
+    padding: 22px;
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    background: rgba(116, 139, 180, .16);
+    box-shadow: 0 24px 65px rgba(8, 18, 38, .24);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+/* Conversation area */
+#response {
+    width: 100%;
+    height: calc(100vh - 230px);
+    min-height: 320px;
+    max-height: 760px;
+    margin: 0 auto;
+    padding: 30px clamp(16px, 4vw, 48px);
+    color: #edf4ff;
+    font-size: 15.5px;
+    line-height: 1.75;
+    background: rgba(24, 42, 68, .32);
+    border: 1px solid rgba(221, 235, 255, .12);
+    border-radius: 18px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+    scrollbar-color: rgba(174, 202, 244, .45) transparent;
+    scrollbar-width: thin;
+}
+
+#response::-webkit-scrollbar {
+    width: 8px;
+}
+#response::-webkit-scrollbar-thumb {
+    background: rgba(174, 202, 244, .42);
+    border-radius: 20px;
+}
+#response::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#response a {
+    color: #9bcaff;
+}
+#response h1,
+#response h2,
+#response h3,
+#response h4 {
+    color: #fff;
+    line-height: 1.3;
+}
+#response blockquote {
+    margin: 14px 0;
+    padding: 10px 16px;
+    color: #d4e2f7;
+    border-left: 3px solid #8dbdff;
+    background: rgba(255,255,255,.06);
+    border-radius: 0 10px 10px 0;
+}
+#response hr {
+    border: 0;
+    border-top: 1px solid rgba(220,235,255,.18);
+}
+#response pre {
+    color: #eaf1ff;
+    background: rgba(13, 23, 40, .88);
+    border: 1px solid rgba(190, 215, 255, .13);
+    border-radius: 12px;
+    box-shadow: 0 8px 22px rgba(0,0,0,.14);
+}
+#response code {
+    color: #d8e8ff;
+    background: rgba(16, 31, 54, .72);
+    border: 1px solid rgba(200,220,255,.10);
+}
+#response pre code {
+    border: 0;
+}
+#response table {
+    width: 100%;
+    border-collapse: collapse;
+    display: block;
+    overflow-x: auto;
+}
+#response th,
+#response td {
+    padding: 9px 12px;
+    border: 1px solid rgba(220,235,255,.2);
+}
+#response th {
+    background: rgba(255,255,255,.09);
+}
+
+/* User and assistant message bubbles */
+.msg {
+    max-width: min(82%, 760px);
+    padding: 13px 18px;
+    margin-bottom: 18px;
+    border: 1px solid rgba(226, 237, 255, .13);
+    border-radius: 17px;
+    box-shadow: 0 7px 20px rgba(7, 17, 35, .12);
+}
+.msg.user {
+    color: #fff;
+    background: linear-gradient(115deg, #3267ee, #713ee9);
+    border: 0;
+    border-bottom-right-radius: 5px;
+}
+.msg.ai {
+    color: #edf4ff;
+    background: rgba(222, 233, 250, .12);
+    border-bottom-left-radius: 5px;
+}
+
+/* Input dock */
+.container {
+    position: sticky;
+    bottom: 0;
+    left: auto;
+    transform: none;
+    width: min(100%, 850px);
+    max-width: 850px;
+    margin: 18px auto 2px;
+    padding: 9px;
+    gap: 10px;
+    align-items: flex-end;
+    background: rgba(222, 233, 250, .15);
+    border: 1px solid rgba(224, 237, 255, .25);
+    border-radius: 17px;
+    box-shadow: 0 12px 32px rgba(8, 18, 38, .22);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+#question {
+    min-width: 0;
+    min-height: 46px;
+    max-height: 110px;
+    padding: 12px 15px;
+    color: #fff;
+    caret-color: #a9d5ff;
+    background: rgba(17, 32, 55, .36);
+    border: 1px solid rgba(220, 235, 255, .22);
+    border-radius: 11px;
+}
+#question::placeholder {
+    color: #c2cee1;
+}
+#question:focus {
+    border-color: #83baff;
+    box-shadow: 0 0 0 3px rgba(93, 157, 255, .17);
+}
+#askButton,
+#clearbtn,
+.modal-actions button,
+.startbtn {
+    color: #fff;
+    background: linear-gradient(110deg, #2865ed, #8138ed);
+    border: 0;
+    font-weight: 700;
+    transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+}
+#askButton {
+    min-height: 46px;
+    padding: 0 22px;
+    border-radius: 11px;
+}
+#askButton:hover,
+#clearbtn:hover,
+.modal-actions button:hover,
+.startbtn:hover {
+    background: linear-gradient(110deg, #3978ff, #914cff);
+    box-shadow: 0 8px 22px rgba(31, 75, 190, .3);
+    transform: translateY(-2px);
+}
+#askButton:active,
+#clearbtn:active,
+.startbtn:active {
+    transform: translateY(0);
+}
+#askButton:disabled {
+    filter: grayscale(.25);
+}
+
+/* Clear chat action */
+.clearcontainer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 0 2px 12px;
+}
+#clearbtn {
+    width: auto;
+    min-width: 112px;
+    height: 36px;
+    padding: 0 17px;
+    border: 1px solid rgba(220,235,255,.22);
+    border-radius: 30px;
+    font-size: 13px;
+    letter-spacing: .3px;
+    background: rgba(225, 237, 255, .13);
+}
+#clearbtn:hover {
+    color: #fff;
+}
+#clearbtn.onclic {
+    width: 40px;
+    min-width: 40px;
+    background: rgba(255,255,255,.12);
+    border: 4px solid #8dbdff;
+    border-left-color: transparent;
+}
+#clearbtn.validate {
+    width: 40px;
+    min-width: 40px;
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
+}
+
+/* Welcome / home screen, using the same glass-and-gradient visual language */
+#startScreen {
+    width: min(100%, 1000px);
+    margin: clamp(24px, 7vh, 76px) auto 40px;
+    padding: clamp(24px, 5vw, 52px);
+    text-align: center;
+    border: 1px solid var(--glass-border);
+    border-radius: 26px;
+    background: rgba(116, 139, 180, .19);
+    box-shadow: 0 24px 65px rgba(8, 18, 38, .24);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+.home {
+    gap: 18px;
+}
+.logo {
+    width: clamp(54px, 7vw, 86px);
+    height: auto;
+    object-fit: contain;
+}
+.maintitel {
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.2rem);
+    font-weight: 850;
+    letter-spacing: -2px;
+    background: linear-gradient(90deg, #fff, #9bcaff, #fff);
+    background-size: 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.tagline {
+    max-width: 680px;
+    margin: 8px auto 30px;
+    color: #d6e3f6;
+    font-size: clamp(16px, 2vw, 19px);
+    line-height: 1.6;
+}
+.features {
+    max-width: 900px;
+    gap: 16px;
+    margin-bottom: 30px;
+}
+.feature {
+    padding: 22px;
+    background: rgba(222, 233, 250, .12);
+    border: 1px solid rgba(220, 235, 255, .18);
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(8, 18, 38, .12);
+}
+.feature::before {
+    content: "";
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: conic-gradient(
+        from var(--angle),
+        transparent 0deg,
+        transparent 285deg,
+        #65b8ff 325deg,
+        #8b5cf6 350deg,
+        #c5e4ff 360deg
+    );
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    animation: spin-border 3.2s linear infinite;
+}
+.feature > * {
+    position: relative;
+    z-index: 1;
+}
+
+.feature h3 {
+    color: #a9d5ff;
+}
+.feature p {
+    color: #d4dfef;
+    line-height: 1.65;
+}
+.text-box {
+    flex-wrap: wrap;
+    gap: 14px;
+}
+.startbtn {
+    padding: 15px 25px;
+    border-radius: 12px;
+    font-size: 14px;
+    text-transform: none;
+    letter-spacing: .2px;
+}
+.start-status {
+    color: #d6e3f6;
+}
+
+/* Modal */
+.modal-overlay {
+    background: rgba(8, 17, 32, .68);
+    backdrop-filter: blur(7px);
+}
+.modal {
+    color: #edf4ff;
+    background: linear-gradient(145deg, rgba(65, 88, 127, .98), rgba(49, 69, 105, .98));
+    border: 1px solid rgba(220,235,255,.22);
+    border-radius: 18px;
+    box-shadow: 0 22px 60px rgba(0,0,0,.35);
+}
+.modal h2 {
+    color: #fff;
+}
+.modal p {
+    color: #d4dfef;
+}
+.modal-actions button.secondary {
+    color: #e8f0ff;
+    background: rgba(255,255,255,.13);
+}
+.modal-actions button.secondary:hover {
+    background: rgba(255,255,255,.2);
+}
+
+/* Responsive layout */
+@media (max-width: 700px) {
+    body {
+        padding: 12px;
+    }
+    #start {
+        padding: 12px;
+        border-radius: 18px;
+    }
+    #response {
+        height: calc(100vh - 190px);
+        min-height: 280px;
+        padding: 18px 14px;
+        font-size: 14.5px;
+    }
+    .msg {
+        max-width: 94%;
+        padding: 11px 14px;
+    }
+    .container {
+        width: 100%;
+        margin-top: 12px;
+        padding: 7px;
+        gap: 7px;
+    }
+    #question {
+        font-size: 15px;
+        padding: 10px;
+    }
+    #askButton {
+        padding: 0 14px;
+        font-size: 14px;
+    }
+    #startScreen {
+        margin-top: 18px;
+        padding: 24px 16px;
+    }
+    .home {
+        gap: 10px;
+    }
+    .text-box {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .startbtn {
+        width: 100%;
+    }
+}
+
+/* =========================================================
+   Motion polish — subtle, smooth animations
+   ========================================================= */
+
+/* Gentle entrance for the home panel and chat workspace */
+@keyframes panelRiseIn {
+    from { opacity: 0; transform: translateY(22px) scale(.985); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+#startScreen {
+    animation: panelRiseIn .75s cubic-bezier(.2,.75,.25,1) both;
+}
+
+#start {
+    animation: panelRiseIn .65s cubic-bezier(.2,.75,.25,1) both;
+}
+
+/* Logo floats very slightly; title gets a soft shimmer */
+@keyframes logoFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-7px); }
+}
+
+.logo {
+    animation: logoFloat 4s ease-in-out infinite;
+    filter: drop-shadow(0 8px 18px rgba(105, 174, 255, .2));
+}
+
+.maintitel {
+    background-size: 220%;
+    animation: shimmer 4s linear infinite;
+}
+
+/* Feature cards lift on hover; their animated border remains intact */
+.feature {
+    transition: transform .28s ease, box-shadow .28s ease, background .28s ease;
+    animation: cardArrive .7s cubic-bezier(.2,.75,.25,1) both;
+}
+
+.feature:nth-child(1) { animation-delay: .08s; }
+.feature:nth-child(2) { animation-delay: .18s; }
+.feature:nth-child(3) { animation-delay: .28s; }
+
+@keyframes cardArrive {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.feature:hover {
+    transform: translateY(-7px);
+    background: rgba(222, 233, 250, .17);
+    box-shadow: 0 18px 35px rgba(8, 18, 38, .22);
+}
+
+/* Button highlight sweeps across when hovered */
+#askButton,
+.startbtn,
+#clearbtn {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+#askButton::after,
+.startbtn::after,
+#clearbtn::after {
+    content: "";
+    position: absolute;
+    top: -60%;
+    left: -75%;
+    width: 45%;
+    height: 220%;
+    z-index: -1;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.24), transparent);
+    transform: skewX(-22deg);
+    transition: left .65s ease;
+}
+
+#askButton:hover::after,
+.startbtn:hover::after,
+#clearbtn:hover::after {
+    left: 140%;
+}
+
+/* Input dock responds softly when the textarea is focused */
+.container {
+    transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+}
+.container:focus-within {
+    border-color: rgba(151, 197, 255, .62);
+    box-shadow: 0 0 0 4px rgba(93, 157, 255, .10), 0 16px 38px rgba(8, 18, 38, .28);
+}
+
+#question {
+    transition: border-color .22s ease, background .22s ease, box-shadow .22s ease;
+}
+
+/* JS adds this class to each newly-created chat bubble */
+.msg.message-enter {
+    animation: messageArrive .38s cubic-bezier(.2,.75,.25,1) both;
+}
+
+@keyframes messageArrive {
+    from { opacity: 0; transform: translateY(12px) scale(.985); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.msg.user.message-enter {
+    transform-origin: right bottom;
+}
+
+.msg.ai.message-enter {
+    transform-origin: left bottom;
+}
+
+/* Make code blocks and links feel responsive without being distracting */
+#response pre {
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+#response pre:hover {
+    border-color: rgba(145, 190, 255, .32);
+    box-shadow: 0 12px 28px rgba(0,0,0,.2);
+}
+#response a {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: color .2s ease;
+}
+#response a:hover {
+    color: #d0e7ff;
+}
+
+/* Respect the visitor's reduced-motion accessibility preference */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+}
+
+/* ==========================================
+   CHAT++ WELCOME SCREEN
+   AURORA FLOW BORDER ANIMATION
+========================================== */
+
+#startScreen {
+    position: relative;
+    isolation: isolate;
+
+    border: 1px solid rgba(173, 216, 255, 0.25);
+    border-radius: 35px;
+
+    /* Glass effect */
+    background: rgba(255, 255, 255, 0.035);
+
+    box-shadow:
+        0 15px 45px rgba(0, 0, 0, 0.12),
+        0 0 25px rgba(59, 130, 246, 0.08);
+
+    animation: auroraGlow 5s ease-in-out infinite;
+}
+
+/* Four moving light streaks */
+
+#startScreen::before {
+    content: "";
+
+    position: absolute;
+    inset: -1px;
+
+    border-radius: inherit;
+
+    pointer-events: none;
+    z-index: 2;
+
+    background:
+
+        /* Top edge */
+        linear-gradient(
+            90deg,
+            transparent,
+            #38bdf8,
+            #a78bfa,
+            transparent
+        ) top left / 180px 2px no-repeat,
+
+        /* Right edge */
+        linear-gradient(
+            180deg,
+            transparent,
+            #a78bfa,
+            #38bdf8,
+            transparent
+        ) top right / 2px 180px no-repeat,
+
+        /* Bottom edge */
+        linear-gradient(
+            270deg,
+            transparent,
+            #38bdf8,
+            #a78bfa,
+            transparent
+        ) bottom right / 180px 2px no-repeat,
+
+        /* Left edge */
+        linear-gradient(
+            0deg,
+            transparent,
+            #a78bfa,
+            #38bdf8,
+            transparent
+        ) bottom left / 2px 180px no-repeat;
+
+    animation: auroraTravel 7s linear infinite;
+}
+
+/* Light streak movement */
+
+@keyframes auroraTravel {
+
+    0% {
+        background-position:
+            0 0,
+            100% 0,
+            100% 100%,
+            0 100%;
+    }
+
+    25% {
+        background-position:
+            calc(100% - 180px) 0,
+            100% calc(100% - 180px),
+            0 100%,
+            0 0;
+    }
+
+    50% {
+        background-position:
+            0 0,
+            100% 0,
+            100% 100%,
+            0 100%;
+    }
+
+    75% {
+        background-position:
+            calc(100% - 180px) 0,
+            100% calc(100% - 180px),
+            0 100%,
+            0 0;
+    }
+
+    100% {
+        background-position:
+            0 0,
+            100% 0,
+            100% 100%,
+            0 100%;
+    }
+}
+
+/* Subtle breathing glow */
+
+@keyframes auroraGlow {
+
+    0%, 100% {
+        box-shadow:
+            0 15px 45px rgba(0, 0, 0, 0.12),
+            0 0 15px rgba(59, 130, 246, 0.08);
+    }
+
+    50% {
+        box-shadow:
+            0 15px 45px rgba(0, 0, 0, 0.16),
+            0 0 30px rgba(59, 130, 246, 0.20),
+            0 0 45px rgba(139, 92, 246, 0.10);
+    }
+}
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+
+    #startScreen,
+    #startScreen::before {
+        animation: none;
+    }
+}
+
+.chat-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: 20px;
+    gap: 8px;
+}
+
+/* Tiny toggle */
+.theme-toggle {
+    position: relative;
+    display: block;
+    width: 42px;
+    height: 20px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.theme-toggle input {
+    display: none;
+}
+
+.toggle-slider {
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background: #555;
+    transition: 0.25s;
+}
+
+.toggle-slider::before {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    top: 3px;
+    left: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.25s;
+}
+
+.theme-toggle input:checked + .toggle-slider {
+    background: linear-gradient(135deg, #3867f5, #8138ed);
+}
+
+.theme-toggle input:checked + .toggle-slider::before {
+    transform: translateX(22px);
+}
+
+#incognitoMessage {
+    font-size: 15px;
+    font-weight: 500;
+    text-align: right;
+    transition: 0.3s;
+}
+
+/* Incognito Mode ON */
+body.incognito-mode {
+    background: #232323 !important;
+    background-image: none !important;
+}
+
+/* Other screen sections */
+body.incognito-mode #start,
+body.incognito-mode #startScreen,
+body.incognito-mode #response {
+    background: #000000 !important;
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Input area */
+body.incognito-mode .container {
+    background: #151515 !important;
+    border-color: #333;
+}
+
+body.incognito-mode #question {
+    background: #222 !important;
+    color: white;
+    border-color: #444;
+}
+
+body.incognito-mode #question::placeholder {
+    color: #aaa;
+}
+
+
+
+/* Welcome message inside chat */
+#response .empty {
+    margin-top: 120px;
+    text-align: center;
+
+    font-family: "Segoe UI", sans-serif;
+    font-size: clamp(35px, 4vw, 48px);
+    font-weight: 800;
+    letter-spacing: 1px;
+
+    background: linear-gradient(
+        90deg,
+        #ffffff,
+        #8fcaff,
+        #b794ff,
+        #ffffff
+    );
+
+    background-size: 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+
+    animation: welcomeShimmer 4s linear infinite;
+}
+
+@keyframes welcomeShimmer {
+    from {
+        background-position: 800% center;
+    }
+    to {
+        background-position: -200% center;
+    }
+}
+/* ---------- Sign out button (online chat only) ---------- */
+.clearcontainer {
+    gap: 10px;
+}
+
+#signoutbtn {
+    min-width: 96px;
+    height: 36px;
+    padding: 0 17px;
+    border: 1px solid rgba(220, 235, 255, .35);
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .3px;
+    color: #dbe7ff;
+    background: rgba(225, 237, 255, .08);
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease;
+}
+
+#signoutbtn[hidden] {
+    display: none;
+}
+
+#signoutbtn:hover:not(:disabled) {
+    color: #fff;
+    background: rgba(239, 68, 68, .28);
+    border-color: rgba(248, 113, 113, .7);
+    transform: translateY(-2px);
+}
+
+#signoutbtn:disabled {
+    opacity: .6;
+    cursor: wait;
+}

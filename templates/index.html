@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat++</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <div id="startScreen"><br><br><br>
+        <div class="home">
+        <img class="logo" src="{{ url_for('static', filename='icon.png') }}">
+        <div class="maintitel">Chat++</div></div><br><br><br>
+        <p class="tagline"><b>Your hybrid AI assistant, thinking on your device and in the cloud.</b></p>
+
+        <div class="features">
+            <div class="feature">
+                <h3>Hybrid intelligence</h3>
+                <p>Answers run on your device when your browser supports it, and switch to the cloud automatically when it doesn't.</p>
+            </div>
+            <div class="feature">
+                <h3>Powered by Gemini</h3>
+                <p>Built with Firebase AI Logic and Google's Gemini models to give clear, helpful answers to your questions.</p>
+            </div>
+            <div class="feature">
+                <h3>Easy to read</h3>
+                <p>Replies come with bold text, lists and code blocks, and long answers scroll neatly inside the chat box.</p>
+            </div>
+        </div>
+        <br>
+        <div class="text-box">
+            <button onclick="getStartOffline()" class="startbtn" type="button">Get Started with offline</button>
+            <button onclick="getStart()" class="startbtn" type="button">Get Started with online</button>
+        </div>
+        <p id="startStatus" class="start-status" aria-live="polite"></p>
+    </div>
+    <div id="start" style="display: none;">
+        <div id="response"></div><br>
+        <div class="clearcontainer">
+            <button id="signoutbtn" type="button" hidden>sign out</button>
+            <button id="clearbtn" type="button">clear chat</button>
+        </div>
+        <div class="chat-controls">
+            <label class="theme-toggle">
+                <input type="checkbox" id="themeToggle">
+                <span class="toggle-slider"></span>
+            </label>
+
+            <div id="incognitoMessage"></div>
+
+        </div>
+        <div class="container">
+            <textarea
+            id="question"
+            rows="1"
+            placeholder="Ask something..."
+        ></textarea>
+            <button id="askButton">Ask</button>
+        </div>
+    </div>
+
+    <!-- Popup shown when the offline (on-device) version can't run in this browser -->
+    <div id="modalOverlay" class="modal-overlay" hidden>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <h2 id="modalTitle">Offline mode isn't supported</h2>
+            <p>Your browser or device can't run the on-device AI model, so the offline version isn't available here.</p>
+            <p>We recommend the <strong>online version</strong>, which works in any browser. To try offline mode, use a recent desktop version of Chrome with Gemini Nano enabled.</p>
+            <div class="modal-actions">
+                <button id="modalOnline" type="button">Use online version</button>
+                <button id="modalClose" type="button" class="secondary">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- These two must come BEFORE firebase-ai.js -->
+    <script src="{{ url_for('static', filename='js/marked.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/purify.min.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='build/firebase-ai.js') }}"></script>
+
+    <!-- Our scripts (order matters: chat-ui defines window.chatUI first) -->
+    <script src="{{ url_for('static', filename='js/chat-ui.js') }}"></script>
+
+    <!-- Chat animations -->
+    <script src="{{ url_for('static', filename='js/chat-animations.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
+
+    <!-- When opened from the black page (/online/chat), skip the home screen and go straight to the chat -->
+    {% if auto_start %}
+    <script>openChat({{ auto_start|tojson }});</script>
+    {% endif %}
+</body>
+</html>
