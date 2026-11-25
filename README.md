@@ -233,13 +233,6 @@ database/chat.db        Offline chat history (created automatically, not uploade
 .env                    Your private keys (you create it, not uploaded)
 ```
 
-## Security notes
-
-- Never upload `.env`, `database/` or your App Check debug tokens to GitHub. If a secret was ever uploaded, make a new one and disable the old one. Deleting the file later is not enough, because the old commits still contain it.
-- The Firebase config values and the reCAPTCHA **site** key are public by design. The reCAPTCHA **secret** key stays only in the Firebase console.
-- `app.run(debug=True)` is for your own computer. Turn debug mode off when you put the app on a server.
-- When you host the app, store the keys in the host's secret settings and not in the code.
-
 ## License
 
-Add a license of your choice (for example MIT) before you share the project.
+MIT (see `LICENSE`).
