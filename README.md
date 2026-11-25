@@ -233,6 +233,10 @@ database/chat.db        Offline chat history (created automatically, not uploade
 .env                    Your private keys (you create it, not uploaded)
 ```
 
+## Demo
+
+<https://www.youtube.com/watch?v=KwzU6UyRWvs>
+
 ## License
 
 MIT (see `LICENSE`).
